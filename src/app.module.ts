@@ -3,18 +3,30 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvelopeModule } from './modules/envelope/envelope.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { config } from 'configuration/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'rabisco',
-      schema: 'fme',
-      synchronize: true,
-      autoLoadEntities: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          type: 'postgres',
+          host: configService.get('database.host'),
+          port: configService.get('database.port'),
+          username: configService.get('database.username'),
+          password: configService.get('database.password'),
+          schema: configService.get('database.schema'),
+          synchronize: true,
+          autoLoadEntities: true,
+        };
+      },
     }),
     EnvelopeModule,
   ],
