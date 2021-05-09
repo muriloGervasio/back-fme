@@ -23,6 +23,7 @@ import { config } from 'configuration/config';
           username: configService.get('database.username'),
           password: configService.get('database.password'),
           schema: configService.get('database.schema'),
+          database: configService.get('database.database'),
           synchronize: true,
           autoLoadEntities: true,
         };

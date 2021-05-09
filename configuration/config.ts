@@ -5,5 +5,6 @@ export const config = () => ({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     schema: process.env.DB_SCHEMA,
+    database: process.env.DB,
   },
 });
