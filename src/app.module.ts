@@ -26,6 +26,14 @@ import { config } from 'configuration/config';
           database: configService.get('database.database'),
           synchronize: true,
           autoLoadEntities: true,
+          ssl: configService.get('database.ssl'),
+          extra: configService.get('database.ssl')
+            ? {
+                ssl: {
+                  rejectUnauthorized: false,
+                },
+              }
+            : {},
         };
       },
     }),
